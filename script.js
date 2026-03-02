@@ -89,7 +89,7 @@ let currentMode = 'general';
  * received. Prevents the user from sending another message while the
  * assistant is still replying (avoids race conditions and garbled output).
  */
-let isStreaming = true;
+let isStreaming = false;
 
 /*
  * isListening — True while the speech recognition engine is actively
@@ -560,7 +560,7 @@ async function checkHealth() {
     try {
         const r = await fetch(`${API}/health`, { signal: AbortSignal.timeout(5000) });
         const d = await r.json();
-        const ok = d.status === 'healthy';
+        const ok = d.ok === true;
         statusDot.classList.toggle('offline', !ok);   // Add 'offline' class if NOT healthy
         statusText.textContent = ok ? 'Online' : 'Offline';
     } catch {
